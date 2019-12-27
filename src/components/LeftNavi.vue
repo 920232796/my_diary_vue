@@ -56,7 +56,7 @@
       </div>
     </div>
 
-     <el-dialog
+     <!-- <el-dialog
       title="提示"
       :visible.sync="submitEditdialogVisible"
       width="30%">
@@ -64,7 +64,8 @@
   <span slot="footer" class="dialog-footer">
     <el-button type="primary" @click="submitEditdialogVisible = false">确 定</el-button>
   </span>
-    </el-dialog>
+    </el-dialog> -->
+     <!-- <el-button :plain="true" @click="open">{{isEditSucc}}</el-button> -->
 
 
 
@@ -175,12 +176,12 @@ import Bus from "@/components/Bus.vue"
           //点击一个笔记，得到笔记的内容
           clickBook(book_id, book_content) {
             // console.log(book_id)
+            this.editContent = book_content
+            this.editBookId = book_id
             let book_data = {
                 editContent: book_content, 
                 editBookId: book_id
             }
-            this.editContent = book_content
-            this.editBookId = book_id
             Bus.$emit("clickBook", book_data) // 使用中间组件Bus 传输数据到editor组件！
           
           },
@@ -206,7 +207,8 @@ import Bus from "@/components/Bus.vue"
             res = res.data
 //            console.log(res)
             this.isEditSucc = res.message
-           this.submitEditdialogVisible = true
+          //  this.submitEditdialogVisible = true
+            this.$message(this.isEditSucc);
 
             this.clickBookCollection(this.currentBookCollection)
           },
