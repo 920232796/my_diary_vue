@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-    <el-col :span="4">
+    <el-col :span="4" class="navi">
         <el-menu
         default-active="2"
         class="el-menu-vertical-demo"
@@ -118,8 +118,29 @@ import Bus from "@/components/Bus.vue"
             Bus.$on("getBookData", (data) => {
                 this.editContent = data;
             });
+            window.addEventListener('scroll', this.handleScroll); // 弄一个监听事件 监听滚动
         },
         methods: {
+            handleScroll() {
+               var scrollTop = window.pageYOffset || 
+                  document.documentElement.scrollTop || 
+                  document.body.scrollTop; //获取滑动了多少px
+                  // document.querySelector('.navi').style.marginTop = scrollTop + "px";
+                  var height = document.querySelector('.navi').offsetHeight; //获取当前导航框的高度
+                  var flag = 1; //表示初始没动过！
+                  if (scrollTop > height - 100 && flag == 1) {
+                    //说明看不见导航框了！
+                    //要修改margin-top！
+                    document.querySelector('.navi').style.marginTop = scrollTop + "px";
+                    flag = 0;//表示移动过了
+                  } 
+                  if (flag == 0 && scrollTop < height) {
+                    // console.log("haha");
+                    document.querySelector('.navi').style.marginTop = 5 + "px";
+                    flag = 1;
+                  }
+                
+            },
             handleOpen(index, indexPath) {
 //                console.log(index)
                 if (index == 1) {
@@ -250,12 +271,17 @@ import Bus from "@/components/Bus.vue"
 </script>
 
 <style scoped>
-    .col {
-        width: 150px;
-        margin-left: 10px;
+  
+    .navi {
+      /* border: 1px solid red; */
+      /* position: fixed; */
+      /* top: 10px; //开始处于距离顶部300px的位置，之后随着滚动条滚动top值改变，然后在top==100时停止 */
+      /* box-sizing: border-box;
+      z-index: 2; */
+      margin-top: 5px;
     }
     .book {
-    margin-left: 10px;
+    margin-left: 20px;
     width: 500px;
     border-right: 1px  solid grey;
     float: left;
