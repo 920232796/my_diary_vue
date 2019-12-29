@@ -119,8 +119,17 @@ import Bus from "@/components/Bus.vue"
                 this.editContent = data;
             });
             window.addEventListener('scroll', this.handleScroll); // 弄一个监听事件 监听滚动
+            document.addEventListener('keydown',this.handleEvent); //监听键盘事件！
+
         },
         methods: {
+            handleEvent(event) {
+              if (event.keyCode == 13 && event.ctrlKey) {
+                console.log("hello enter");
+                this.submitBook();
+              }
+
+            },
             handleScroll() {
                var scrollTop = window.pageYOffset || 
                   document.documentElement.scrollTop || 
