@@ -41,7 +41,7 @@ export default {
         // console.log("hello change");
         // console.log(value);
         //发信号给导航区域，自动给点击提交！
-        Bus.$emit("getBookData", value);
+        // Bus.$emit("getBookData", value); //把自动提交关了把！！ 提交太多次了。
       },
       $imgAdd(pos, $file){
             // 第一步.将图片上传到服务器.
