@@ -2,7 +2,8 @@
   <div class="editor1">
       <mavon-editor defaultOpen="edit" ref="md" v-model="editContent"
        @imgAdd="$imgAdd" 
-       @imgDel="$imgDel"></mavon-editor>
+       @imgDel="$imgDel"
+       @change="editChange"></mavon-editor>
   </div>
 </template>
 
@@ -30,11 +31,18 @@ export default {
         //得到通知，证明点击提交按钮了！
       Bus.$on("informEditor", () => {
         //   console.log("inform !!")
-          Bus.$emit("getBookData", this.editContent)
+          Bus.$emit("getBookData", this.editContent);
       })
   },
 
   methods: {
+      editChange(value, render) {
+        //监听到编辑区域发生了改变，所以应该提交内容！！ 这样就不用手动提交了！
+        // console.log("hello change");
+        // console.log(value);
+        //发信号给导航区域，自动给点击提交！
+        Bus.$emit("getBookData", value);
+      },
       $imgAdd(pos, $file){
             // 第一步.将图片上传到服务器.
             var formdata = new FormData();

@@ -117,6 +117,8 @@ import Bus from "@/components/Bus.vue"
             //点击提交按钮之后，在这里接收一下editor传过来的数据
             Bus.$on("getBookData", (data) => {
                 this.editContent = data;
+                //接收到通知了，这里需要真正进行提交笔记！
+                this.submitBookDo();
             });
             window.addEventListener('scroll', this.handleScroll); // 弄一个监听事件 监听滚动
             document.addEventListener('keydown',this.handleEvent); //监听键盘事件！
@@ -219,26 +221,34 @@ import Bus from "@/components/Bus.vue"
             this.addBookCollectionDialog = true
           },
 
-
           submitBook() {
             if (this.editBookId != -1)
             {
-//               证明已经选中了笔记 所以提交
+//               证明已经选中了笔记 所以提交 ,这里只是发一个通知，获取到编辑区域的数据
               Bus.$emit("informEditor");
-              axios.get("/api/book/submitBook", {
+              //真正提交是下面那个Do函数。
+            }
+          },
+          submitBookDo() {
+            //真正发请求，提交笔记数据。
+            axios.get("/api/book/submitBook", {
                 params: {
                   editContent: this.editContent,
                   editBookId: this.editBookId
                 }
-              }).then(this.handleSubmitBookSucc)
-            }
+            }).then(this.handleSubmitBookSucc)
           },
           handleSubmitBookSucc(res){
             res = res.data
 //            console.log(res)
             this.isEditSucc = res.message
           //  this.submitEditdialogVisible = true
-            this.$message(this.isEditSucc);
+            // this.$message(this.isEditSucc);
+            this.$message({
+              message: this.isEditSucc, 
+              type: "success", 
+              duration: 1000,
+            })
 
             this.clickBookCollection(this.currentBookCollection)
           },
